@@ -28,6 +28,28 @@ function formatHashV2(id){
   return hashTable;
 }
 
+function formatHashV3(id){
+  var hashTable = {};
+  hashTable[id] = {};
+  var orderLength=0;
+  relevantProducts.forEach(function(order){
+    order.forEach(function(product){
+      if (product._id.toString()!==id.toString()){
+        if (hashTable[id][product._id.toString()]){
+          // console.log("adding");
+          hashTable[id][product._id.toString()]+=1;
+        } else {
+          // console.log('ID:',product._id.toString());
+          hashTable[id][product._id.toString()]=1;
+        }
+      }
+    });
+    orderLength++;
+  });
+  console.log(orderLength);
+  return hashTable;
+}
+
 function top3Id(hashTable){
   var array = [];
   var lastIndex = 0;
@@ -88,12 +110,12 @@ router.get('/:id', function(req, res) { //Takes a product ID and reccomends 3 pr
             	relevantProducts.push(order.products);
             }
         });
-        relevantProducts.forEach(function(obj){
-          console.log(JSON.stringify(obj,null,2));
-        });
-        var newHash=formatHashV2(id);
-        var retArray = top3Id(newHash);
-        res.json(retArray);
+        // relevantProducts.forEach(function(obj){
+        //   console.log(JSON.stringify(obj,null,2));
+        // });
+        var retHash = formatHashV2(id);
+        var top3Arr = top3Id(retHash);
+        res.json(top3Arr);
     });
 });
 
