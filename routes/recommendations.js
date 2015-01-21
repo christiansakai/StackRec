@@ -115,6 +115,7 @@ router.get('/:id', function(req, res) { //Takes a product ID and reccomends 3 pr
         // });
         var retHash = formatHashV2(id);
         var top3Arr = top3Id(retHash);
+        console.log(top3Arr);
         res.json(top3Arr);
     });
 });
